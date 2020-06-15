@@ -219,7 +219,7 @@ void Menu::ActivosRentados(string nombre, string contraseña, string departamento
 		cin >> opcionActivo;
 		//buscar activo y cambiar su estado
 		//mostrar atributos de dicho activo
-		//com
+		//comfbgsggnsgnsry
 	}
 	else
 	{
