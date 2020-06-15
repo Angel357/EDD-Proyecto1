@@ -17,6 +17,6 @@ public:
 
 
 	//todo conforme al administrador
-	void MenuAdmin(string Nombre, string Contraseña, string Departamento, string Empresa);
+	void MenuAdmin();
 };
 

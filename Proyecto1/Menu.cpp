@@ -219,10 +219,33 @@ void Menu::ActivosRentados(string nombre, string contraseña, string departamento
 		cin >> opcionActivo;
 		//buscar activo y cambiar su estado
 		//mostrar atributos de dicho activo
-		//comfbgsggnsgnsry
+
 	}
 	else
 	{
 		MenuUsuario(nombre, contraseña, departamento, empresa);
 	}
+}
+void Menu::MisActivosRentados(string nombre, string contraseña, string departamento, string empresa)
+{
+	system("cls");
+	int l;
+	cout << "-------------------------------  Mis activos en renta  -------------------------------\n\n\n";
+	//mostrar activos en renta, se tomaran de a lista doble 
+
+	cout << "\n\n\n               Ingresar 1 para regresar al menu:\n               ";
+	cin >> l;
+	if (l==1)
+	{
+		MenuUsuario(nombre, contraseña,departamento, empresa);
+	}
+	else
+	{
+		MisActivosRentados(nombre, contraseña, departamento, empresa);
+	}
+}
+
+void Menu::MenuAdmin()
+{
+
 }
