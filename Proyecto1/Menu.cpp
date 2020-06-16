@@ -44,7 +44,7 @@ void Menu::Login()
 		if (nombre=="admin")
 		{
 			system("cls");
-			MenuAdmin(nombre, contraseña, departamento, empresa);
+			MenuAdmin();
 		}
 		else 
 		{
@@ -103,6 +103,11 @@ void Menu::MenuUsuario(string nombre,string contraseña,string departamento,strin
 	case 7:
 		system("cls");
 		Login();
+		break;
+	default:
+		system("cls");
+		cout << "\n\n               LA OPCION INGRESADA NO COINCIDE CON NINGUNA SALIDA, INTENTELO DE NUEVO";
+		MenuUsuario(nombre, contraseña, departamento, empresa);
 		break;
 	}
 
@@ -247,5 +252,253 @@ void Menu::MisActivosRentados(string nombre, string contraseña, string departame
 
 void Menu::MenuAdmin()
 {
+	system("cls");
+	int opcion;
+	cout << "--------------------------  Menu Administrador  --------------------------";
+	cout << "\n\n     1. Registrar Usuario";
+	cout << "\n     2. Reporte Cubo Disperso";
+	cout << "\n     3. Reporte activos disponibles en un departamento";
+	cout << "\n     4. Reporte activos disponibles en una empresa";
+	cout << "\n     5. Reporte transacciones";
+	cout << "\n     6. Reporte activos de un usuario";
+	cout << "\n     7. Activos rentados por un usuario";
+	cout << "\n     8. Ordenar Transacciones";
+	cout << "\n     9. Cerrar sesion";
+	cout << "\n\n      Ingresar opcion:\n       --";
+	cin >> opcion;
+	switch (opcion)
+	{
+	case 1:
+		RegistrarUsuario();
+		break;
+	case 2:
+		ReporteMatriz();
+		break;
+	case 3:
+		ReporteActivosDepartamento();
+		break;
+	case 4:
+		ReporteActivosEmpresa();
+		break;
+	case 5:
+		ReporteTransaccion();
+		break;
+	case 6:
+		ReporteActivosUsuario();
+		break;
+	case 7:
+		ActivosRentadosUsuario();
+		break;
+	case 8:
+		OrdenarTransacciones();
+		break;
+	case 9:
+		system("cls");
+		Login();
+		break;
+	default:
+		system("cls");
+		cout << "\n\n               LA OPCION INGRESADA NO COINCIDE CON NINGUNA SALIDA, INTENTELO DE NUEVO";
+		MenuAdmin();
+		break;
+	}
 
+}
+void Menu::RegistrarUsuario()
+{
+	system("cls");
+	string nombre, contraseña, departamento, empresa;
+	char l;
+	int opcion;
+	cout << "-----------------------------  ADMINISTRADOR  -----------------------------";
+	cout << "\n-----------------------------  Crear Usuario  -----------------------------";
+
+	cout << "\n\n          Elija una opcion:\n          1. Crear Usuario\n          2. Regresar al menu\n";
+	cin >> opcion;
+	if (opcion==1)
+	{
+		cout << "\n\n-------Ingresar Nombre de Usuario\n--------";
+		cin >> nombre;
+		cout << "\n-------Ingresar Contraseña\n--------";
+		cin >> contraseña;
+		cout << "\n-------Ingresar Departamento\n--------";
+		cin >> departamento;
+		cout << "\n-------Ingresar Empresa\n--------";
+		cin >> empresa;
+
+		Matriz* m = new Matriz;
+		if (m->BuscarUsuario(nombre, contraseña, departamento, empresa) != nullptr)
+		{
+			system("cls");
+			cout << "\n\n\n         No puede existir un usuario con el mismo nombre en la misma empresa y en el mismo departamento\n\n\n   ingreselo nuevamente!";
+			cout << "\n    presione cualquier tecla para continuar";
+			cin >> l;
+			RegistrarUsuario();
+		}
+		else
+		{
+			system("cls");
+			m->Insertar(nombre, contraseña, departamento, empresa);
+			cout << "\n\n        Usuario " << nombre << " agregado con exito!";
+
+		}
+	}
+	else if (opcion==2)
+	{
+		MenuAdmin();
+	}
+	else
+	{
+		char l2;
+		system("cls");
+		cout << "\n\n                opcion incorrecta!\n";
+		cin >> l2;
+
+		RegistrarUsuario();
+	}
+}
+void Menu::ReporteMatriz()
+{
+	char l;
+	system("cls");
+	cout << "\n\n--------------------------  Se creo reporte de matriz dispersa\n\n   presione cualquier tecla para volver al menu:\n   ";
+	// crear reporte de matriz
+
+	cin >> l;
+	MenuAdmin();
+}
+void Menu::ReporteActivosDepartamento()
+{
+	char l;
+	string departamento;
+	system("cls");
+	cout << "\n\n              ingresar departamento:\n              ";
+	cin >> departamento;
+	// crear reporte de activos por departamento
+
+	cout << "\n\n--------------------------  Se creo reporte de activos por departamento\n\n   presione cualquier tecla para volver al menu:\n   ";
+	
+	cin >> l;
+	MenuAdmin();
+}
+void Menu::ReporteActivosEmpresa()
+{
+	char l;
+	string empresa;
+	system("cls");
+	cout << "\n\n              ingresar empresa:\n              ";
+	cin >> empresa;
+	// crear reporte de activos por empresa
+
+	cout << "\n\n--------------------------  Se creo reporte de activos por empresa\n\n   presione cualquier tecla para volver al menu:\n   ";
+
+	cin >> l;
+	MenuAdmin();
+}
+void Menu::ReporteTransaccion()
+{
+	system("cls");
+	char l;
+	//crear reporte transacciones
+	cout << "\n\n              Se creo el reporte de transacciones!\n\n             presione cualquier tecla para volver al menu";
+	cin >> l;
+	MenuAdmin();
+}
+void Menu::ReporteActivosUsuario()
+{
+	system("cls");
+	char l;
+	int opcion;
+	string usuario;
+	cout << "----------------------------------- Reporte de activos de usuario -----------------------------------";
+	cout << "\n\n               1. ingresar usuario\n               2. regresar al menu\n                ";
+	cin >> opcion;
+	if (opcion==1)
+	{
+		cout << "\n\n         Ingrese el usuario al que desea ver sus activos\n";
+		cin >> usuario;
+
+		// generar reporte de activos de un usuario
+		cout << "\n\n           se genero reporte de activos del usuario: "<<usuario<<" \n\n           presione cualquier tecla para volver al menu";
+		cin >> l;
+		MenuAdmin();
+	}
+	else if (opcion==2)
+	{
+		MenuAdmin();
+	}
+	else
+	{
+		char l;
+		cout << "\n\n        la opcion selecciona no coincide con ninguna permitida";
+	    cin >> l;
+		MenuAdmin();
+
+	}
+}
+void Menu::ActivosRentadosUsuario()
+{
+	system("cls");
+	string Usuario;
+	int opcion;
+	char l;
+	cout << "----------------------------- Activos rentados por usuario -----------------------------";
+	cout << "\n\n               1. ingresar usuario\n               2. regresar al menu\n                ";
+	cin >> opcion;
+	if (opcion == 1)
+	{
+		cout << "\n\n         Ingrese el usuario del que desea conocer que acrivos a rentado\n";
+		cin >> Usuario;
+
+		// generar reporte de activos rentados por un usuario usuario
+		cout << "\n\n           se genero reporte de activos rentados por el usuario: " << Usuario << " \n\n           presione cualquier tecla para volver al menu";
+		cin >> l;
+		MenuAdmin();
+	}
+	else if (opcion == 2)
+	{
+		MenuAdmin();
+	}
+	else
+	{
+		char l;
+		cout << "\n\n        la opcion selecciona no coincide con ninguna permitida";
+		cin >> l;
+		MenuAdmin();
+	}
+}
+void Menu::OrdenarTransacciones()
+{
+	int opcion;
+	string orden;
+	char l;
+
+	cout << "----------------------------------- Orden de Transacciones -----------------------------------";
+	cout << "\n\n               seleccione una accion:";
+	cout << "\n\n               1. ordenascendete\n               2. orden desendente\n                ";
+	cin >> opcion;
+	if (opcion == 1)
+	{
+		
+
+		// generar reporte de transacciones ascendente (immprimirla como esta)
+		cout << "\n\n           se genero reporte ascendente de transacciones\n\n           presione cualquier tecla para volver al menu";
+		cin >> l;
+		MenuAdmin();
+	}
+	else if (opcion == 2)
+	{
+		// generar reporte de transacciones descendentes (recorrer la lista del fin al inicio)
+		cout << "\n\n           se genero reporte descendente de transacciones\n\n           presione cualquier tecla para volver al menu";
+		cin >> l;
+		MenuAdmin();
+	}
+	else
+	{
+		char l;
+		cout << "\n\n        la opcion selecciona no coincide con ninguna permitida";
+		cin >> l;
+		MenuAdmin();
+
+	}
 }

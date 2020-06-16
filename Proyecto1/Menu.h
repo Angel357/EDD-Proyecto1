@@ -18,5 +18,13 @@ public:
 
 	//todo conforme al administrador
 	void MenuAdmin();
+	void RegistrarUsuario();
+	void ReporteMatriz();
+	void ReporteActivosDepartamento();
+	void ReporteActivosEmpresa();
+	void ReporteTransaccion();
+	void ReporteActivosUsuario();
+	void ActivosRentadosUsuario();
+	void OrdenarTransacciones();
 };
 
