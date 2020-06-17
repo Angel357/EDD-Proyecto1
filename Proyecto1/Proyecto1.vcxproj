@@ -152,9 +152,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aleatorio.cpp" />
+    <ClCompile Include="Arbol.cpp" />
     <ClCompile Include="LCTransacciones.cpp" />
     <ClCompile Include="Matriz.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="NodoAl.cpp" />
     <ClCompile Include="NodoLC.cpp" />
     <ClCompile Include="NodoM.cpp" />
@@ -162,9 +164,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aleatorio.h" />
+    <ClInclude Include="Arbol.h" />
     <ClInclude Include="LCTransacciones.h" />
     <ClInclude Include="Matriz.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Nodo.h" />
     <ClInclude Include="NodoAl.h" />
     <ClInclude Include="NodoLC.h" />
     <ClInclude Include="NodoM.h" />
