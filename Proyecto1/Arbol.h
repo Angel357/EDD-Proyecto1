@@ -4,7 +4,7 @@ class Arbol
 {
 public:
 	Nodo* Raiz;
-	Nodo* Aux;
+	bool Accion;
 	Arbol()
 	{
 		Aux = nullptr;
@@ -13,10 +13,15 @@ public:
 	}
 	void Insertar(string idActivo, string nombre, string descripcion, string estado);
 	void Insertar2(Nodo* aux, string idActivo, string nombre, string descripcion, string estado);
-	Nodo* Buscar(int numero);
-	Nodo* Buscar2(Nodo* aux, int numero);
-	void Eliminar(int numero);
-	void Eliminar2(Nodo* aux, int numero);
-	void Modificar(int numero, int nuevoNumero);
+	Nodo* Buscar(string idActivo);
+	Nodo* Buscar2(Nodo* aux, string idActivo);
+	void Eliminar(string idAcivo);
+	void Eliminar2(Nodo* aux, string idActivo);
+	void Modificar(string idActivoModificar, string idActivo, string nombre, string descripcion, string estado);
 	void PreOrden(Nodo* aux);
+
+	void Equilibrar(Nodo* padre,int rama, bool accion)
+	{
+
+	}
 };
