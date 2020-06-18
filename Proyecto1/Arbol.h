@@ -7,7 +7,6 @@ public:
 	bool Accion;
 	Arbol()
 	{
-		Aux = nullptr;
 		Raiz = nullptr;
 
 	}
@@ -19,9 +18,12 @@ public:
 	void Eliminar2(Nodo* aux, string idActivo);
 	void Modificar(string idActivoModificar, string idActivo, string nombre, string descripcion, string estado);
 	void PreOrden(Nodo* aux);
+	Nodo* RetornarRaiz();
 
-	void Equilibrar(Nodo* padre,int rama, bool accion)
-	{
+	void Equilibrar(Nodo* padre, int rama, bool accion);
+	void RSI(Nodo* nodo);
+	void RSD(Nodo* nodo);
+	void RDI(Nodo* nodo);
+	void RDD(Nodo* nodo);
 
-	}
 };

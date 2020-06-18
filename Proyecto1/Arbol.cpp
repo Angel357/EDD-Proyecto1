@@ -111,6 +111,9 @@ void Arbol::Eliminar(string idActivo)
 		aux->Estado = aux->izquierda->Estado;
 
 		aux->padre->izquierda = nullptr;// el nodo como tal no se elimina solo deja de formar parte del arbol
+		int rama = 0;
+		Accion = false;
+		Equilibrar(aux->padre->padre,rama,Accion);
 	}
 	else
 	{
@@ -132,6 +135,9 @@ void Arbol::Eliminar2(Nodo* aux, string idActivo)
 		aux->Descripcion = Aux->Descripcion;
 		aux->Estado = Aux->Estado;
 		Aux->padre->derecha = nullptr;
+		int rama = 1;
+		Accion = false;
+		Equilibrar(aux->padre->padre, rama, Accion);
 	}
 }
 
@@ -148,9 +154,9 @@ void Arbol::PreOrden(Nodo* aux)
 	{
 		return;
 	}
-	if (aux->numero > 0)
+	else
 	{
-		cout << "valor-> " << aux->numero;
+		cout << aux->IDactivo<<"\n";
 	}
 
 	PreOrden(aux->izquierda);
@@ -229,3 +235,206 @@ void Arbol::Equilibrar(Nodo* padre, int rama, bool accion)
 		padre = padre->padre;
 	}
 }
+void Arbol::RSI(Nodo* nodo)
+{
+	Nodo* padre = nodo->padre;
+	Nodo* p = nodo;
+	Nodo* q = p->derecha;
+	Nodo* b = q->izquierda;
+
+	if (padre)
+	{
+		if (padre->derecha == p)
+		{
+			padre->derecha = q;
+		}
+		else
+		{
+			padre->izquierda = q;
+		}
+	}
+	else
+	{
+		Raiz = q;
+	}
+
+	p->derecha = b;
+	q->izquierda = p;
+
+	p->padre = q;
+	if (b)
+	{
+		b->padre = p;
+	}
+	q->padre = padre;
+
+	p->FE=0;
+	q->FE=0;
+}
+void Arbol::RSD(Nodo* nodo)
+{
+	Nodo* padre = nodo->padre;
+	Nodo* p = nodo;
+	Nodo* q = p->izquierda;
+	Nodo* b = q->izquierda;
+
+	if (padre)
+	{
+		if (padre->derecha==p)
+		{
+			padre->derecha = q;
+		}
+		else
+		{
+			padre->izquierda = q;
+		}
+	}
+	else
+	{
+		Raiz = q;
+	}
+
+	p->derecha = b;
+	q->izquierda = p;
+
+	p->padre = q;
+	if (b)
+	{
+		b->padre = p;
+	}
+	q->padre = padre;
+
+	p->FE = 0;
+	q->FE = 0;
+}
+void Arbol::RDI(Nodo* nodo)
+{
+	Nodo* padre = nodo->padre;
+	Nodo* p = nodo;
+	Nodo* q = p->izquierda;
+	Nodo* r = q->derecha;
+	Nodo* b = r->izquierda;
+	Nodo* c = r->derecha;
+
+
+	if (padre)
+	{
+		if (padre->derecha==nodo)
+		{
+			padre->derecha = r;
+		}
+		else
+		{
+			padre->izquierda = r;
+		}
+	}
+	else
+	{
+		Raiz = r;
+	}
+
+	q->derecha = b;
+	p->izquierda = c;
+	r->izquierda = p;
+	r->derecha = q;
+
+	r->padre = padre;
+	p->padre = q->padre = r;
+	if (b)
+	{
+		b->padre = p;
+	}
+	if (c)
+	{
+		c->padre = q;
+	}
+
+	switch (r->FE)
+	{
+	case -1:
+		p->FE = 0;
+		q->FE = 1;
+		break;
+	case 0:
+		p->FE = 0;
+		q->FE = 0;
+		break;
+	case 1:
+		p->FE = -1;
+		q->FE = 0;
+		break;
+	}
+	r->FE = 0;
+
+
+
+}
+void Arbol::RDD(Nodo* nodo)
+{
+	Nodo* padre = nodo->padre;
+	Nodo* p = nodo;
+	Nodo* q = p->izquierda;
+	Nodo* r = q->derecha;
+	Nodo* b = r->izquierda;
+	Nodo* c = r->derecha;
+
+
+	if (padre)
+	{
+		if (padre->derecha == nodo)
+		{
+			padre->derecha = r;
+		}
+		else
+		{
+			padre->izquierda = r;
+		}
+	}
+	else
+	{
+		Raiz = r;
+	}
+
+	q->derecha = b;
+	p->izquierda = c;
+	r->izquierda = q;
+	r->derecha = p;
+
+	r->padre = padre;
+	p->padre = q->padre = r;
+	if (b)
+	{
+		b->padre = q;
+	}
+	if (c)
+	{
+		c->padre = p;
+	}
+
+	switch (r->FE)
+	{
+	case -1:
+		p->FE = 0;
+		q->FE = 1;
+		break;
+	case 0:
+		p->FE = 0;
+		q->FE = 0;
+		break;
+	case 1:
+		p->FE = -1;
+		q->FE = 0;
+		break;
+	}
+	r->FE = 0;
+
+}
+
+Nodo* Arbol::RetornarRaiz()
+{
+	return Raiz;
+}
+
+
+
+

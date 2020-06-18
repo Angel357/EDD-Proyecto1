@@ -1,10 +1,12 @@
 #include "Matriz.h"
 #include "NodoM.h"
+#include "Arbol.h"
 #include <iostream>
 
 void Matriz::Insertar(string nombre, string contraseña, string departamento, string empresa)
 {
-	NodoM* Usuario=new NodoM(nombre, contraseña, departamento,empresa);
+	Arbol* avl = new Arbol();
+	NodoM* Usuario=new NodoM(nombre, contraseña, departamento,empresa,avl);
 	NodoM* Empresa=BuscarEmpresa(empresa,Inicio);
 	NodoM* Departamento=BuscarDepartamento(departamento,Inicio);
 
@@ -132,7 +134,8 @@ void Matriz::Insertar(string nombre, string contraseña, string departamento, str
 
 NodoM* Matriz::CrearEmpresa(string empresa)
 {
-	NodoM* emp=new NodoM(empresa,"encabezado","","");
+	Arbol* avl = new Arbol();
+	NodoM* emp=new NodoM(empresa,"encabezado","","",avl);
 	NodoM* aux=Inicio;
 	while (aux->abajo!=nullptr)
 	{ 
@@ -145,7 +148,8 @@ NodoM* Matriz::CrearEmpresa(string empresa)
 
 NodoM* Matriz::CrearDepartamento(string departamento)
 {
-	NodoM* depto = new NodoM(departamento,"encabezado","","");
+	Arbol* avl = new Arbol();
+	NodoM* depto = new NodoM(departamento,"encabezado","","",avl);
 	NodoM* aux = Inicio;
 	while (aux->siguiente!=nullptr)
 	{
