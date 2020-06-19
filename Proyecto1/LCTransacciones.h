@@ -20,7 +20,7 @@ public:
 	void Ordenar(NodoLC* inicio);
 	bool LCVacia();
 	void TransaccionUsuario(string nombreUsuario);
-	void MostrarTransaccionesAscendente();
-	void MostrarTransaccionesDescendente();
+	void MostrarTransaccionesAscendente(string prueba);
+	void MostrarTransaccionesDescendente(string prueba);
 };
 

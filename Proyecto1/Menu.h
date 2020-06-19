@@ -7,8 +7,8 @@ using namespace std;
 class Menu
 {
 public:
-	Matriz* m;
-	LCTransacciones* Transaccion;
+	Matriz* m=new Matriz;
+	LCTransacciones* Transaccion = new LCTransacciones;
 	void Iniciar();
 	void Login();
 	//todo conforme al usuario

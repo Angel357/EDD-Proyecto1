@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-string Aleatorio::Id()
+string Aleatorio::Id(string prueba)
 {
 	bool bandera=false;
 	while (!bandera)

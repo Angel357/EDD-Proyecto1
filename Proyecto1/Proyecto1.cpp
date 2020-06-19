@@ -1,10 +1,6 @@
 //Clase Principal
 #include <iostream>
-#include "Aleatorio.h"
-#include "Matriz.h"
-#include "NodoM.h"
 #include "Menu.h"
-#include "Nodo.h"
 using namespace std;
 
 int main()

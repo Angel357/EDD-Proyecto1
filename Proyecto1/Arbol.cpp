@@ -106,15 +106,24 @@ void Arbol::Eliminar(string idActivo)
 	Nodo* aux2 = Buscar(idActivo);
 	if (aux2->izquierda == nullptr&&aux2->derecha == nullptr)
 	{
-		if (aux2->IDactivo>aux2->padre->IDactivo)
+		if (aux2->Nombre==Raiz->Nombre)
 		{
-
-			aux2->padre->derecha = nullptr;
+			Raiz = nullptr;
 		}
 		else
 		{
-			aux2->padre->izquierda = nullptr;
+			if (aux2->IDactivo > aux2->padre->IDactivo)
+
+			{
+
+				aux2->padre->derecha = nullptr;
+			}
+			else
+			{
+				aux2->padre->izquierda = nullptr;
+			}
 		}
+		
 	}
 	else if (aux2->izquierda != nullptr&& aux2->izquierda->derecha == nullptr)
 	{
@@ -136,7 +145,10 @@ void Arbol::Eliminar(string idActivo)
 			aux2->izquierda = nullptr;// el nodo como tal no se elimina solo deja de formar parte del arbol
 			int rama = 0;
 			bool Accion = false;
-			Equilibrar(aux2->padre->padre, rama, Accion);
+			if (aux2->padre!=nullptr)
+			{
+				Equilibrar(aux2->padre->padre, rama, Accion);
+			}
 		}
 	}
 	else
@@ -163,7 +175,10 @@ void Arbol::Eliminar2(Nodo* aux, Nodo* aux2, string idActivo)
 		Aux->padre = nullptr;
 		int rama = 1;
 		bool Accion = false;
-		Equilibrar(aux->padre->padre, rama, Accion);
+		if (aux2->padre != nullptr)
+		{
+			Equilibrar(aux2->padre->padre, rama, Accion);
+		}
 	}
 }
 

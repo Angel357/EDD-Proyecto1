@@ -2,6 +2,7 @@
 #include <iostream>
 #include "NodoM.h"
 #include "Matriz.h"
+using namespace std;
 
 class Matriz
 { 
@@ -25,6 +26,6 @@ public :
 	NodoM* BuscarUsuario(string nombre, string contraseña, string departamento, string empresa);
 	NodoM* BuscarUsuarioUnico(string nombre);
 
-	void ImprimirMatriz();
+	void ImprimirMatriz(string prueba);
 };
 

@@ -8,7 +8,7 @@ class Aleatorio
 public:
 	string ID;
 	NodoAl* RegID;
-	string Id();
+	string Id(string prueba);
 	void CrearId();
 	bool Buscar(string ID);
 	void insertar(string ID);

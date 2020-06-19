@@ -2,6 +2,7 @@
 #include "NodoM.h"
 #include "Arbol.h"
 #include <iostream>
+using namespace std;
 
 void Matriz::Insertar(string nombre, string contraseña, string departamento, string empresa)
 {
@@ -270,18 +271,18 @@ NodoM* Matriz::BuscarUsuarioUnico(string nombre)
 
 }
 
-void Matriz::ImprimirMatriz()
+void Matriz::ImprimirMatriz(string prueba)
 {
 	NodoM* aux = Inicio;
 	NodoM* aux2 = Inicio;
 	while (aux != nullptr)
 	{
-		cout << aux->Nombre;
-		cout <<", ";
+		
 		while (aux2 != nullptr)
 		{
 			cout << aux2->Nombre;
 			cout << ", ";
+			aux2=aux2->siguiente;
 		}
 		cout << "\n";
 		aux2 = aux->abajo;
