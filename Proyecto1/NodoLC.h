@@ -11,11 +11,11 @@ public:
 	string UsuarioRentor;
 	string URDepartamento;
 	string UREmpresa;
-	string Fecha;
 	string DiasRenta;
+	string nombreActivo;
 
-	NodoLC(string IdTransaccion, string IdActivo, string UsuarioRentor, string URDepartamento,
-		   string UREmpresa, string Fecha, string DiasRenta)
+	NodoLC(string IdTransaccion, string IdActivo, string nombreActivo, string UsuarioRentor, string URDepartamento,
+		   string UREmpresa,  string DiasRenta)
 	{
 		Siguiente = nullptr;
 		Anterior = nullptr;
@@ -24,8 +24,8 @@ public:
 		this->UsuarioRentor = UsuarioRentor;
 		this->URDepartamento = URDepartamento;
 		this->UREmpresa = UREmpresa;
-		this->Fecha = Fecha;
 		this->DiasRenta = DiasRenta;
+		this->nombreActivo = nombreActivo;
 	}
 };
 

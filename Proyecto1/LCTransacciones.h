@@ -14,10 +14,13 @@ public:
 		Inicio = nullptr;
 		Fin = nullptr; 
 	}
-	void Insertar(string IdTransaccion, string IdActivo, string UsuarioRentor, string URDepartamento,
-		string UREmpresa, string Fecha, string DiasRenta);
+	void Insertar(string IdTransaccion, string IdActivo,string nombreActivo, string UsuarioRentor, string URDepartamento,
+		string UREmpresa, string DiasRenta);
 	NodoLC Buscar(string IdTransaccion);
 	void Ordenar(NodoLC* inicio);
 	bool LCVacia();
+	void TransaccionUsuario(string nombreUsuario);
+	void MostrarTransaccionesAscendente();
+	void MostrarTransaccionesDescendente();
 };
 

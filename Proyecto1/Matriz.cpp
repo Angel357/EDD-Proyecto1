@@ -248,3 +248,43 @@ NodoM* Matriz::BuscarUsuario(string nombre, string contraseña, string departamen
 	return nullptr;
 
 }
+
+NodoM* Matriz::BuscarUsuarioUnico(string nombre)
+{
+	NodoM* aux = Inicio;
+	NodoM* aux2 = Inicio;
+	while (aux != nullptr)
+	{
+		while (aux2 != nullptr)
+		{
+			if (nombre == aux2->Nombre)
+			{
+				return aux2;
+			}
+			aux2 = aux2->siguiente;
+		}
+		aux2 = aux->abajo;
+		aux = aux->abajo;
+	}
+	return nullptr;
+
+}
+
+void Matriz::ImprimirMatriz()
+{
+	NodoM* aux = Inicio;
+	NodoM* aux2 = Inicio;
+	while (aux != nullptr)
+	{
+		cout << aux->Nombre;
+		cout <<", ";
+		while (aux2 != nullptr)
+		{
+			cout << aux2->Nombre;
+			cout << ", ";
+		}
+		cout << "\n";
+		aux2 = aux->abajo;
+		aux = aux->abajo;
+	}
+}

@@ -18,6 +18,8 @@ void Menu::Iniciar()
 	{
 		Login();
 	}
+	m = new Matriz;
+	Transaccion = new LCTransacciones;
 }
 
 void Menu::Login()
@@ -38,8 +40,8 @@ void Menu::Login()
 	cout << "---Ingresar Empresa:\n--- ";
 	cin >> empresa;
 	cout << "\n";
-	Matriz* m = new Matriz;
-	if (m->BuscarUsuario(nombre, contraseña, departamento, empresa)!=nullptr)
+	NodoM* User = m->BuscarUsuario(nombre, contraseña, departamento, empresa);
+	if (User!=nullptr)
 	{
 		if (nombre=="admin")
 		{
@@ -49,7 +51,7 @@ void Menu::Login()
 		else 
 		{
 			system("cls");
-			MenuUsuario(nombre, contraseña, departamento, empresa);
+			MenuUsuario(User, nombre, contraseña, departamento, empresa);
 
 		}
 	}
@@ -65,7 +67,7 @@ void Menu::Login()
 	}
 }
 
-void Menu::MenuUsuario(string nombre,string contraseña,string departamento,string empresa)
+void Menu::MenuUsuario(NodoM* User, string nombre,string contraseña,string departamento,string empresa)
 {
 	system("cls");
 	int opcion;
@@ -82,22 +84,22 @@ void Menu::MenuUsuario(string nombre,string contraseña,string departamento,strin
 	switch (opcion)
 	{
 	case 1:
-		AgregarActivo(nombre, contraseña, departamento, empresa);
+		AgregarActivo(User, nombre, contraseña, departamento, empresa);
 		break;
 	case 2:
-		EliminarActivo(nombre, contraseña, departamento, empresa);
+		EliminarActivo(User,nombre, contraseña, departamento, empresa);
 		break;
 	case 3:
-		ModificarActivo(nombre, contraseña, departamento, empresa);
+		ModificarActivo(User,nombre, contraseña, departamento, empresa);
 		break;
 	case 4:
-		RentarActivo(nombre, contraseña, departamento, empresa);
+		RentarActivo(User,nombre, contraseña, departamento, empresa);
 		break;
 	case 5:
-		ActivosRentados(nombre, contraseña, departamento, empresa);
+		ActivosRentados(User,nombre, contraseña, departamento, empresa);
 		break;
 	case 6:
-		MisActivosRentados(nombre, contraseña, departamento, empresa);
+		MisActivosRentados(User,nombre, contraseña, departamento, empresa);
 
 		break;
 	case 7:
@@ -107,72 +109,83 @@ void Menu::MenuUsuario(string nombre,string contraseña,string departamento,strin
 	default:
 		system("cls");
 		cout << "\n\n               LA OPCION INGRESADA NO COINCIDE CON NINGUNA SALIDA, INTENTELO DE NUEVO";
-		MenuUsuario(nombre, contraseña, departamento, empresa);
+		MenuUsuario(User,nombre, contraseña, departamento, empresa);
 		break;
 	}
 
 }
-void Menu::AgregarActivo(string nombre, string contraseña, string departamento, string empresa)
+void Menu::AgregarActivo(NodoM* User, string nombre, string contraseña, string departamento, string empresa)
 {
 	system("cls");
 	Aleatorio* al = new Aleatorio();
-	string ID = al->ID,nombreActivo,descripcionActivo;
+	string ID = al->ID,nombreActivo,descripcionActivo,estado="disponible";
 	char l;
 	cout << "------------------------  Agregar activo  ------------------------\n\n";
 	cout << "  Ingresar nombre:\n  "; 
 	cin >> nombreActivo;
 	cout << "  Ingresar descripcion:\n  ";
 	cin >> descripcionActivo;
-
+	//insercion de activo en usuario
+	User->avl->Insertar(ID, nombreActivo,descripcionActivo,estado);
 	cout << "Activo Agregado! \n\n   presione cualquier tecla para volver al menu";
 	cin >> l;
-	MenuUsuario(nombre,contraseña,departamento,empresa);
+	MenuUsuario(User, nombre,contraseña,departamento,empresa);
 }
-void Menu::EliminarActivo(string nombre, string contraseña, string departamento, string empresa)
+void Menu::EliminarActivo(NodoM* User,string nombre, string contraseña, string departamento, string empresa)
 {
 	system("cls");
-	string IDeliminar,ActibvoNombre,ActivoDescripcion;
+	string IDeliminar;
 	char l;
 	cout << "----------------------  Eliminar activo  ----------------------\n\n";
-
-	//obtencion de activos
+	// mostrar activos
+	User->avl->DesplegarActivo(User->avl->Raiz);
 	cout << "\n\n   ingresar ID de activo a eliminar\n  ";
 	cin >> IDeliminar;
 	system("cls");
 	cout << "----------------------  Eliminando activo  ----------------------\n\n";
 	//busqueda y descomposicion del activo
+	Nodo* aux=User->avl->Buscar(IDeliminar);
 	cout << "\n\n   Activo eliminado";
 	cout << "\n   ID: " << IDeliminar;
-	cout << "\n   Nombre: "<<ActibvoNombre;
-	cout << "\n   Descripcion: "<<ActivoDescripcion;
+	cout << "\n   Nombre: "<<aux->Nombre;
+	cout << "\n   Descripcion: "<<aux->Descripcion;
+	User->avl->Eliminar(IDeliminar);
 	cout << "\n\n         presione cualquier tecla para volver al menu!";
 	cin >> l;
 	//eliminar activo
-	MenuUsuario(nombre, contraseña, departamento, empresa);
+	MenuUsuario(User,nombre, contraseña, departamento, empresa);
 }
-void Menu::ModificarActivo(string nombre, string contraseña, string departamento, string empresa)
+void Menu::ModificarActivo(NodoM* User,string nombre, string contraseña, string departamento, string empresa)
 {
 	system("cls");
-	string IDmodificar, ActibvoNombre, ActivoDescripcion;
+	string IDmodificar,nuevoNombre,nuevaDescripcion;
 	char l;
 	cout << "----------------------  Modificar activo  ----------------------\n\n";
-
+	User->avl->DesplegarActivo(User->avl->Raiz);
 	//obtencion de activos
 	cout << "\n\n   ingresar ID de activo a Modificar\n  ";
 	cin >> IDmodificar;
 	system("cls");
+	cout << "\n    Ingrese el nuevo nombre del activo: ";
+	cin >> nuevoNombre;
+	cout << "\n    Ingrese la nueva descripcion del activo: ";
+	cin >> nuevaDescripcion;
+	system("cls");
 	cout << "----------------------  Modificando activo  ----------------------\n\n";
+	Nodo* aux = User->avl->Buscar(IDmodificar);
 	//busqueda y descomposicion del activo
 	cout << "\n\n   Activo Modificado";
 	cout << "\n   ID: " << IDmodificar;
-	cout << "\n   Nombre: " << ActibvoNombre;
-	cout << "\n   Descripcion: " << ActivoDescripcion;
+	cout << "\n   Nombre: " << aux->Nombre;
+	cout << "\n   Descripcion: " << aux->Descripcion;
+	
 	cout << "\n\n         presione cualquier tecla para volver al menu!";
 	cin >> l;
+	User->avl->Modificar(IDmodificar,IDmodificar,nuevoNombre,nuevaDescripcion,aux->Estado);
 	//modificar activo
-	MenuUsuario(nombre, contraseña, departamento, empresa);
+	MenuUsuario(User, nombre, contraseña, departamento, empresa);
 }
-void Menu::RentarActivo(string nombre, string contraseña, string departamento, string empresa)
+void Menu::RentarActivo(NodoM* User,string nombre, string contraseña, string departamento, string empresa)
 {
 	system("cls");
 	int opcion;
@@ -184,34 +197,83 @@ void Menu::RentarActivo(string nombre, string contraseña, string departamento, s
 	cin >> opcion;
 	if (opcion==1)
 	{
+		NodoM* aux = m->Inicio->abajo;
+		NodoM* aux2 = m->Inicio->abajo->siguiente;
+		Nodo* eActivo;
+		while (aux != nullptr)
+		{
+			while (aux2 != nullptr)
+			{
+				if (aux2->avl->Raiz != nullptr)
+				{
+					aux2->avl->DesplegarActivo;
+					cout << "\n";
+				}
+				aux = aux->siguiente;
+			}
+			aux2 = aux->abajo->siguiente;
+			aux = aux->abajo;
+		}
+
 		string renta;
-		int diasRenta;
+		string diasRenta;
 		char l;
-		cout << "\n      ingresar ID de activo a rentar:\n      ";
+		cout << "\n\n      ingresar ID de activo a rentar:\n      ";
 		cin >> renta;
+		aux = m->Inicio->abajo;
+		aux2 = m->Inicio->abajo->siguiente;
+		Nodo* ActivoRentar;
+		NodoM* UsuarioRentor;
+		while (aux != nullptr)
+		{
+			while (aux2 != nullptr)
+			{
+				if (aux2->avl->Raiz != nullptr)
+				{
+				Nodo* t=aux2->avl->Buscar(renta);
+					if (!t)
+					{
+						ActivoRentar = t;
+					}
+				}
+				aux = aux->siguiente;
+			}
+			aux2 = aux->abajo->siguiente;
+			aux = aux->abajo;
+		}
 		cout << "\n\n\n       Activo a rentar:";
+		cout << "\n\n       ID= "<<ActivoRentar->IDactivo<<"; Nombre= "<<ActivoRentar->Nombre<<"; Descripcion= "<<ActivoRentar->Descripcion;
+
 		//mostrar atibutos del activo
-		cout << "\n       ingrese dias a rentar\n        ";
+		cout << "\n\n       ingrese dias a rentar\n        ";
 		cin >> diasRenta;
 		//modificar disponibilidad de activo
+
+		ActivoRentar->Estado = "rentado";
+		//agregar transaccion
+		Aleatorio* a = new Aleatorio;
+		string IDTransaccion=a->ID;
+		Transaccion->Insertar(IDTransaccion,ActivoRentar->IDactivo,ActivoRentar->Nombre,User->Nombre,User->Departamento,User->Empresa,diasRenta);
 		system("cls");
 		cout << "\n\n       Activo Rentado!\n\n      presione cualquier tecla para volver al menu";
 		cin >> l;
-		MenuUsuario(nombre, contraseña, departamento, empresa);
+		MenuUsuario(User,nombre, contraseña, departamento, empresa);
 
 	}
 	else
 	{
-		MenuUsuario(nombre, contraseña, departamento, empresa);
+		MenuUsuario(User,nombre, contraseña, departamento, empresa);
 	}
 
 
 }
-void Menu::ActivosRentados(string nombre, string contraseña, string departamento, string empresa)
+void Menu::ActivosRentados(NodoM* User,string nombre, string contraseña, string departamento, string empresa)
 {
 	system("cls");
-	int opcion,opcionActivo;
+	int opcion;
+	string opcionActivo;
 	cout << "--------------------------------  Activos rentados  --------------------------------";
+	Transaccion->TransaccionUsuario(nombre);
 	// escanear en las transacciones los activos rentados con el nombre del usuario
 
 	cout << "\n\n     1. Registrar devolucion";
@@ -222,31 +284,60 @@ void Menu::ActivosRentados(string nombre, string contraseña, string departamento
 	{
 		cout << "\n\n       ingresar ID de activo a devolver: \n       ";
 		cin >> opcionActivo;
-		//buscar activo y cambiar su estado
-		//mostrar atributos de dicho activo
 
+		//buscar activo y cambiar su estado
+		NodoM* aux = m->Inicio->abajo;
+		NodoM* aux2 = m->Inicio->abajo->siguiente;
+		Nodo* activo;
+		while (aux != nullptr)
+		{
+			while (aux2 != nullptr)
+			{
+				if (aux2->avl->Raiz != nullptr)
+				{
+					if (aux2->avl->Buscar(opcionActivo))
+					{
+						activo = aux2->avl->Buscar(opcionActivo);
+						activo->Estado = "disponible";
+					}
+				}
+				aux = aux->siguiente;
+			}
+			aux2 = aux->abajo->siguiente;
+			aux = aux->abajo;
+		}
+		//mostrar atributos de dicho activo
+		cout << "Activo devuelto: ";
+		cout << "\n   ID: "<<activo->IDactivo<<"; Nombre: "<<activo->Nombre<<"; Descripcion: "<<activo->Descripcion;
+
+		char l;
+		cout << "\n\n            presione cualquier tecla para volver al menu:";
+		cin >> l;
+		MenuUsuario(User,nombre, contraseña,departamento,empresa);
 	}
 	else
 	{
-		MenuUsuario(nombre, contraseña, departamento, empresa);
+		MenuUsuario(User,nombre, contraseña, departamento, empresa);
 	}
 }
-void Menu::MisActivosRentados(string nombre, string contraseña, string departamento, string empresa)
+void Menu::MisActivosRentados(NodoM* User,string nombre, string contraseña, string departamento, string empresa)
 {
 	system("cls");
 	int l;
 	cout << "-------------------------------  Mis activos en renta  -------------------------------\n\n\n";
+	User->avl->VerificarMiActivo(User->avl->Raiz);
+
 	//mostrar activos en renta, se tomaran de a lista doble 
 
 	cout << "\n\n\n               Ingresar 1 para regresar al menu:\n               ";
 	cin >> l;
 	if (l==1)
 	{
-		MenuUsuario(nombre, contraseña,departamento, empresa);
+		MenuUsuario(User,nombre, contraseña,departamento, empresa);
 	}
 	else
 	{
-		MisActivosRentados(nombre, contraseña, departamento, empresa);
+		MisActivosRentados(User,nombre, contraseña, departamento, empresa);
 	}
 }
 
@@ -361,6 +452,8 @@ void Menu::ReporteMatriz()
 {
 	char l;
 	system("cls");
+	cout << "------------------------------- Matriz dispersa -------------------------------\n\n";
+	m->ImprimirMatriz;
 	cout << "\n\n--------------------------  Se creo reporte de matriz dispersa\n\n   presione cualquier tecla para volver al menu:\n   ";
 	// crear reporte de matriz
 
@@ -375,6 +468,27 @@ void Menu::ReporteActivosDepartamento()
 	cout << "\n\n              ingresar departamento:\n              ";
 	cin >> departamento;
 	// crear reporte de activos por departamento
+	NodoM* aux = m->Inicio;
+	NodoM* aux2;
+	while (aux != nullptr)
+	{
+		if (aux->Departamento==departamento)
+		{
+			cout << "\n Todos los activos correspondientes al departamento " << departamento << " son:\n";
+			aux2 = aux->abajo;
+			while (aux2!= nullptr)
+			{
+				if (aux2->avl->Raiz != nullptr)
+				{
+					cout << "Activos de: " << aux2->Nombre<<"\n";
+					aux2->avl->DesplegarActivo;
+					cout << "\n";
+				}
+				aux2 = aux2->abajo;
+			}
+		}
+		aux = aux->siguiente;
+	}
 
 	cout << "\n\n--------------------------  Se creo reporte de activos por departamento\n\n   presione cualquier tecla para volver al menu:\n   ";
 	
@@ -389,6 +503,28 @@ void Menu::ReporteActivosEmpresa()
 	cout << "\n\n              ingresar empresa:\n              ";
 	cin >> empresa;
 	// crear reporte de activos por empresa
+	NodoM* aux = m->Inicio;
+	NodoM* aux2;
+	while (aux != nullptr)
+	{
+		if (aux->Empresa == empresa)
+		{
+			cout << "\n Todos los activos correspondientes a la empresa " << empresa << " son:\n";
+			aux2 = aux->siguiente;
+			while (aux2 != nullptr)
+			{
+				if (aux2->avl->Raiz != nullptr)
+				{
+					cout << "Activos de: " << aux2->Nombre << "\n";
+					aux2->avl->DesplegarActivo;
+					cout << "\n";
+				}
+				aux2 = aux2->siguiente;
+			}
+		}
+		aux = aux->abajo;
+	}
+
 
 	cout << "\n\n--------------------------  Se creo reporte de activos por empresa\n\n   presione cualquier tecla para volver al menu:\n   ";
 
@@ -400,6 +536,8 @@ void Menu::ReporteTransaccion()
 	system("cls");
 	char l;
 	//crear reporte transacciones
+	Transaccion->MostrarTransaccionesAscendente;
+
 	cout << "\n\n              Se creo el reporte de transacciones!\n\n             presione cualquier tecla para volver al menu";
 	cin >> l;
 	MenuAdmin();
@@ -415,9 +553,10 @@ void Menu::ReporteActivosUsuario()
 	cin >> opcion;
 	if (opcion==1)
 	{
-		cout << "\n\n         Ingrese el usuario al que desea ver sus activos\n";
+		cout << "\n\n         Ingrese el nombre del usuario del que desea ver sus activos\n";
 		cin >> usuario;
-
+		NodoM* User = m->BuscarUsuarioUnico(usuario);
+		User->avl->DesplegarActivo(User->avl->Raiz);
 		// generar reporte de activos de un usuario
 		cout << "\n\n           se genero reporte de activos del usuario: "<<usuario<<" \n\n           presione cualquier tecla para volver al menu";
 		cin >> l;
@@ -447,9 +586,9 @@ void Menu::ActivosRentadosUsuario()
 	cin >> opcion;
 	if (opcion == 1)
 	{
-		cout << "\n\n         Ingrese el usuario del que desea conocer que acrivos a rentado\n";
+		cout << "\n\n         Ingrese el nombre del usuario del que desea conocer los activos que a rentado\n";
 		cin >> Usuario;
-
+		Transaccion->TransaccionUsuario(Usuario);
 		// generar reporte de activos rentados por un usuario usuario
 		cout << "\n\n           se genero reporte de activos rentados por el usuario: " << Usuario << " \n\n           presione cualquier tecla para volver al menu";
 		cin >> l;
@@ -480,7 +619,7 @@ void Menu::OrdenarTransacciones()
 	if (opcion == 1)
 	{
 		
-
+		Transaccion->MostrarTransaccionesAscendente;
 		// generar reporte de transacciones ascendente (immprimirla como esta)
 		cout << "\n\n           se genero reporte ascendente de transacciones\n\n           presione cualquier tecla para volver al menu";
 		cin >> l;
@@ -488,6 +627,7 @@ void Menu::OrdenarTransacciones()
 	}
 	else if (opcion == 2)
 	{
+		Transaccion->MostrarTransaccionesDescendente;
 		// generar reporte de transacciones descendentes (recorrer la lista del fin al inicio)
 		cout << "\n\n           se genero reporte descendente de transacciones\n\n           presione cualquier tecla para volver al menu";
 		cin >> l;

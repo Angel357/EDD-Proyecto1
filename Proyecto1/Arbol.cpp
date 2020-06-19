@@ -5,7 +5,7 @@ using namespace std;
 
 void Arbol::Insertar(string idActivo, string nombre, string descripcion, string estado)
 {
-	Accion = true;
+	
 	Nodo* Aux = Raiz;
 	if (Aux == nullptr)
 	{
@@ -19,6 +19,7 @@ void Arbol::Insertar(string idActivo, string nombre, string descripcion, string 
 void Arbol::Insertar2(Nodo* aux, string idActivo, string nombre, string descripcion, string estado)
 {
 	int rama;
+	bool Accion = true;
 	if (aux->izquierda == nullptr&&aux->derecha == nullptr)
 	{
 		if (idActivo > aux->IDactivo || idActivo == aux->IDactivo)
@@ -32,7 +33,7 @@ void Arbol::Insertar2(Nodo* aux, string idActivo, string nombre, string descripc
 		{
 			aux->izquierda = new Nodo(idActivo, nombre, descripcion, estado);
 			aux->izquierda->padre = aux;
-			rama = 1;
+			rama = 0;
 			Equilibrar(aux, rama, Accion);
 		}
 	}
@@ -62,7 +63,7 @@ void Arbol::Insertar2(Nodo* aux, string idActivo, string nombre, string descripc
 		{
 			aux->izquierda = new Nodo(idActivo, nombre, descripcion, estado);
 			aux->izquierda->padre = aux;
-			rama = 1;
+			rama = 0;
 			Equilibrar(aux, rama, Accion);
 		}
 	}
@@ -74,69 +75,94 @@ Nodo* Arbol::Buscar(string idActivo)
 	if (aux == nullptr)
 	{
 		cout << "No hay ningun activo registrado";
-		return;
+		return nullptr;
 	}
 	else
 	{
-		return Buscar2(aux, idActivo);
+		Buscar2(aux, idActivo);
+		Nodo* nuevo = aBuscar;
+		return nuevo;
 	}
 }
 Nodo* Arbol::Buscar2(Nodo* aux, string idActivo)
 {
-	if (aux == nullptr)
-	{
-		return;
-	}
-	if (idActivo == aux->IDactivo)
-	{
-		return aux;
-	}
+	
+		if (aux == nullptr)
+		{
+			return nullptr;
+		}
+		if (idActivo == aux->IDactivo)
+		{
+			aBuscar = aux;
+		}
 
-	PreOrden(aux->izquierda);
-	PreOrden(aux->derecha);
+		Buscar2(aux->izquierda, idActivo);
+		Buscar2(aux->derecha, idActivo);
+	
 }
 
 void Arbol::Eliminar(string idActivo)
 {
-	Nodo* aux = Buscar(idActivo);
-	if (aux->izquierda == nullptr&&aux->derecha == nullptr)
+	Nodo* aux2 = Buscar(idActivo);
+	if (aux2->izquierda == nullptr&&aux2->derecha == nullptr)
 	{
-		aux = nullptr;
-	}
-	else if (aux->padre->izquierda != nullptr&&aux->padre->izquierda->derecha == nullptr)
-	{
-		aux->IDactivo = aux->izquierda->IDactivo;
-		aux->Nombre = aux->izquierda->Nombre;
-		aux->Descripcion = aux->izquierda->Descripcion;
-		aux->Estado = aux->izquierda->Estado;
+		if (aux2->IDactivo>aux2->padre->IDactivo)
+		{
 
-		aux->padre->izquierda = nullptr;// el nodo como tal no se elimina solo deja de formar parte del arbol
-		int rama = 0;
-		Accion = false;
-		Equilibrar(aux->padre->padre,rama,Accion);
+			aux2->padre->derecha = nullptr;
+		}
+		else
+		{
+			aux2->padre->izquierda = nullptr;
+		}
+	}
+	else if (aux2->izquierda != nullptr&& aux2->izquierda->derecha == nullptr)
+	{
+		aux2->IDactivo = aux2->izquierda->IDactivo;
+		aux2->Nombre = aux2->izquierda->Nombre;
+		aux2->Descripcion = aux2->izquierda->Descripcion;
+		aux2->Estado = aux2->izquierda->Estado;
+		if (aux2->izquierda->izquierda!=nullptr)
+		{
+			aux2->izquierda->izquierda->padre = aux2;
+			aux2->izquierda=aux2->izquierda->izquierda;
+			int rama = 0;
+			bool Accion = false;
+			Equilibrar(aux2->padre->padre, rama, Accion);
+		}
+		else
+		{
+
+			aux2->izquierda = nullptr;// el nodo como tal no se elimina solo deja de formar parte del arbol
+			int rama = 0;
+			bool Accion = false;
+			Equilibrar(aux2->padre->padre, rama, Accion);
+		}
 	}
 	else
 	{
-		Eliminar2(aux, idActivo);
+		Eliminar2(aux2,aux2->izquierda->derecha, idActivo);
 	}
 }
-void Arbol::Eliminar2(Nodo* aux, string idActivo)
+void Arbol::Eliminar2(Nodo* aux, Nodo* aux2, string idActivo)
 {
-	Nodo* Aux = aux;
+	Nodo* Aux2 = aux;
+	Nodo* Aux = aux2;
 	if (Aux->derecha != nullptr)
 	{
 		Aux = Aux->derecha;
-		Eliminar2(Aux, idActivo);
+		Eliminar2(Aux2,Aux, idActivo);
 	}
 	else
 	{
-		aux->IDactivo = Aux->IDactivo;
-		aux->Nombre = Aux->Nombre;
-		aux->Descripcion = Aux->Descripcion;
-		aux->Estado = Aux->Estado;
+		Aux2->IDactivo = Aux->IDactivo;
+		Aux2->Nombre = Aux->Nombre;
+		Aux2->Descripcion = Aux->Descripcion;
+		Aux2->Estado = Aux->Estado;
 		Aux->padre->derecha = nullptr;
+		Aux->padre = nullptr;
 		int rama = 1;
-		Accion = false;
+		bool Accion = false;
 		Equilibrar(aux->padre->padre, rama, Accion);
 	}
 }
@@ -157,10 +183,10 @@ void Arbol::PreOrden(Nodo* aux)
 	else
 	{
 		cout << aux->IDactivo<<"\n";
+		PreOrden(aux->izquierda);
+		PreOrden(aux->derecha);
 	}
 
-	PreOrden(aux->izquierda);
-	PreOrden(aux->derecha);
 
 }
 
@@ -213,7 +239,7 @@ void Arbol::Equilibrar(Nodo* padre, int rama, bool accion)
 		{
 			if (padre->derecha->FE==-1)
 			{
-				RDT(padre);
+				RDI(padre);
 			}
 			else
 			{
@@ -273,20 +299,20 @@ void Arbol::RSI(Nodo* nodo)
 }
 void Arbol::RSD(Nodo* nodo)
 {
-	Nodo* padre = nodo->padre;
+	Nodo* Padre = nodo->padre;
 	Nodo* p = nodo;
 	Nodo* q = p->izquierda;
 	Nodo* b = q->izquierda;
 
-	if (padre)
+	if (Padre)
 	{
-		if (padre->derecha==p)
+		if (Padre->derecha==p)
 		{
-			padre->derecha = q;
+			Padre->derecha = q;
 		}
 		else
 		{
-			padre->izquierda = q;
+			Padre->izquierda = q;
 		}
 	}
 	else
@@ -294,15 +320,15 @@ void Arbol::RSD(Nodo* nodo)
 		Raiz = q;
 	}
 
-	p->derecha = b;
-	q->izquierda = p;
+	p->izquierda = b;
+	q->derecha = p;
 
 	p->padre = q;
 	if (b)
 	{
 		b->padre = p;
 	}
-	q->padre = padre;
+	q->padre = Padre;
 
 	p->FE = 0;
 	q->FE = 0;
@@ -311,8 +337,8 @@ void Arbol::RDI(Nodo* nodo)
 {
 	Nodo* padre = nodo->padre;
 	Nodo* p = nodo;
-	Nodo* q = p->izquierda;
-	Nodo* r = q->derecha;
+	Nodo* q = p->derecha;
+	Nodo* r = q->izquierda;
 	Nodo* b = r->izquierda;
 	Nodo* c = r->derecha;
 
@@ -333,8 +359,8 @@ void Arbol::RDI(Nodo* nodo)
 		Raiz = r;
 	}
 
-	q->derecha = b;
-	p->izquierda = c;
+	p->derecha = b;
+	q->izquierda = c;
 	r->izquierda = p;
 	r->derecha = q;
 
@@ -414,16 +440,16 @@ void Arbol::RDD(Nodo* nodo)
 	switch (r->FE)
 	{
 	case -1:
-		p->FE = 0;
-		q->FE = 1;
+		p->FE = 1;
+		q->FE = 0;
 		break;
 	case 0:
 		p->FE = 0;
 		q->FE = 0;
 		break;
 	case 1:
-		p->FE = -1;
-		q->FE = 0;
+		p->FE = 0;
+		q->FE = -1;
 		break;
 	}
 	r->FE = 0;
@@ -433,6 +459,42 @@ void Arbol::RDD(Nodo* nodo)
 Nodo* Arbol::RetornarRaiz()
 {
 	return Raiz;
+}
+
+void::Arbol::DesplegarActivo(Nodo* Raiz)
+{
+	Nodo* aux = Raiz;
+	if (aux == nullptr)
+	{
+		return;
+	}
+	else
+	{
+		if (aux->Estado == "disponible")
+		{
+			cout << "\n--ID= " << aux->IDactivo << "; Nombre: " << aux->Nombre;
+		}
+		DesplegarActivo(aux->izquierda);
+		DesplegarActivo(aux->derecha);
+	}
+}
+
+void::Arbol::VerificarMiActivo(Nodo* Raiz)
+{
+	Nodo* aux = Raiz;
+	if (aux == nullptr)
+	{
+		return;
+	}
+	else
+	{
+		if (aux->Estado == "rentado")
+		{
+			cout << "\n--ID= " << aux->IDactivo << "; Nombre: " << aux->Nombre;
+		}
+		VerificarMiActivo(aux->izquierda);
+		VerificarMiActivo(aux->derecha);
+	}
 }
 
 

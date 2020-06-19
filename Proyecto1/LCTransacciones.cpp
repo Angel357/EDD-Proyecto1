@@ -14,13 +14,12 @@ bool LCTransacciones::LCVacia()
 		return false;
 	}
 }
-void LCTransacciones::Insertar(string IdTransaccion, string IdActivo, string UsuarioRentor, 
-							   string URDepartamento, string UREmpresa, string Fecha, 
-							   string DiasRenta)
+void LCTransacciones::Insertar(string IdTransaccion, string IdActivo,string nombreActivo, string UsuarioRentor, 
+							   string URDepartamento, string UREmpresa, string DiasRenta)
 {
 	NodoLC* Nuevo;
 	Nuevo = new NodoLC(IdTransaccion, IdActivo, UsuarioRentor, URDepartamento,
-		               UREmpresa, Fecha, DiasRenta);
+		               UREmpresa, DiasRenta);
 	if (LCVacia())
 	{
 		Nuevo->Siguiente = Nuevo;
@@ -41,7 +40,7 @@ void LCTransacciones::Insertar(string IdTransaccion, string IdActivo, string Usu
 
 NodoLC LCTransacciones::Buscar(string IdTransaccion)
 {
-	if (LCVacia())
+	if (!LCVacia())
 	{
 		NodoLC* aux = Inicio;
 		do
@@ -76,6 +75,70 @@ void LCTransacciones::Ordenar(NodoLC* Inicio)
 		aux = aux->Siguiente;
 	}
 }
+
+void  LCTransacciones::TransaccionUsuario(string nombreUsuario)
+{
+	bool bandera;
+	if (!LCVacia())
+	{
+		NodoLC* aux = Inicio;
+		do
+		{
+			if (aux->UsuarioRentor == nombreUsuario)
+			{
+				bandera = true;
+				cout << "\n   ID: " << aux->IdActivo << "; Nombre: " << aux->nombreActivo<<"; Tiempo de renta: "<<aux->DiasRenta<<" dias";
+			}
+			aux = aux->Siguiente;
+		} while (aux->Siguiente != Inicio);
+	}
+	if (!bandera)
+	{
+		cout << "No ha rentado ningun activo!";
+	}
+
+}
+
+void LCTransacciones::MostrarTransaccionesAscendente()
+{
+	NodoLC* aux = Inicio;
+	do
+	{
+		if (aux)
+		{
+			cout << "\n ID de transaccion: " << aux->IdTransaccion << "; ID activo Rentado: "<<aux->IdActivo;
+			cout << " nombre de activo: "<<aux->nombreActivo<<" Usuario rentor: "<<aux->UsuarioRentor;
+			cout << " departamento: "<<aux->URDepartamento<<" empresa: "<<aux->UREmpresa;
+			cout << " dias de renta: "<<aux->DiasRenta<<" dias";
+		}
+		else
+		{
+			cout << "No hay transacciones que mostrar";
+		}
+		aux = aux->Siguiente;
+	} while (aux->Siguiente != Inicio);
+}
+void LCTransacciones::MostrarTransaccionesDescendente()
+{
+	NodoLC* aux = Fin;
+	do
+	{
+		if (aux)
+		{
+			cout << "\n ID de transaccion: " << aux->IdTransaccion << "; ID activo Rentado: " << aux->IdActivo;
+			cout << " nombre de activo: " << aux->nombreActivo << " Usuario rentor: " << aux->UsuarioRentor;
+			cout << " departamento: " << aux->URDepartamento << " empresa: " << aux->UREmpresa;
+			cout << " dias de renta: " << aux->DiasRenta << " dias";
+		}
+		else
+		{
+			cout << "No hay transacciones que mostrar";
+		}
+		aux = aux->Anterior;
+	} while (aux->Anterior != Fin);
+}
+
+
 
 
 

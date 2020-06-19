@@ -9,7 +9,8 @@ public :
 	NodoM* Inicio;
 	Matriz()
 	{
-		Inicio = new NodoM("admin","admin","","");
+		Arbol* avl = new Arbol;
+		Inicio = new NodoM("admin","admin","admin","admin", avl);
 	}
 	void Insertar(string nombre, string contraseña, string departamento, string empresa);
 	NodoM* CrearEmpresa(string empresa);
@@ -22,5 +23,8 @@ public :
 	bool VerificarDepartamento(string departamento, NodoM* inicio, NodoM* usuario);
 
 	NodoM* BuscarUsuario(string nombre, string contraseña, string departamento, string empresa);
+	NodoM* BuscarUsuarioUnico(string nombre);
+
+	void ImprimirMatriz();
 };
 
