@@ -10,11 +10,11 @@ using namespace std;
 int main()
 {
 	//probando git 
-	/*Matriz* m = new Matriz;
+	//Matriz* m = new Matriz;
 	Menu* me = new Menu;
-	me->Iniciar();*/
+	me->Iniciar();
 
-	Matriz* m = new Matriz();
+	/*Matriz* m = new Matriz();
 	m->Insertar("pedro", "vivares", "gua","max");
 	m->Insertar("pedro", "castañeda", "tec", "tel");
 	m->Insertar("pedro", "calderon", "sol", "afro");
@@ -43,7 +43,7 @@ int main()
 	usuario->avl->Eliminar("10");
 
 	usuario->avl->PreOrden(usuario->avl->Raiz);
-
+	*/
 
 	return 0;
 }
